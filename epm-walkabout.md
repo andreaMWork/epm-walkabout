@@ -188,7 +188,7 @@ BUDDY BONUS!
 If you have a friend who is also working with epm you can have a little bit of fun here. If one of you types `epm -log 3 run` and the other types `epm run --mine` the first person will not mine but will be able to see new blocks come in from the second user. Its kind of cool if you ask me.
 
 
-KEYS!
+**KEYS!** TODO
 
 
 3) Poking the chain
@@ -429,6 +429,8 @@ This is a far more complex file. It has multiple stages. First it deploys the co
 This is followed by a transaction and a ... commit? WTF? Am I just making this up as I go along? Well kinda. Commit is a command only required in pdx files. When using command line commands like deploy and transact are automatically mined in after the fact. But in a pdx for maximal efficiency mining (or commiting the state changes) only happens when explicitly stated. We commit after the transact to ensure the state has been committed to for the call that comes next. The rest of the file follows from the same as before.
 
 If you want to see what happens when an assert try editing either the .pdx or the contract itself.
+
+One tiny note about pdx's and vars. Vars are stored PER CHAIN. A var created in one chain is not accessible from another chain. ALSO the vars created and edited in pdx sessions are persistent! So they can be used from commandline or other pdx files.
 
 For a take-home assignment take a look at the files example2.sol (which is actually the solidity version of gendoug which runs permissions on thelonious chains) and the associated example2_1.pdx which is the deployment and testing suite. It follows much the same formula as above. 
 
