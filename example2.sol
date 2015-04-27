@@ -5,7 +5,6 @@ contract gendoug {
 	}
 	struct userdata {
 		mapping (uint => uint) permvals;
-//		mapping (uint => bool) exclude;
 		mapping (uint => uint) exclude;
 	}
 
@@ -47,23 +46,6 @@ contract gendoug {
 		if (p.permnum == 0) return 0;
 		return 1;
 	}
-
-//	function getPerm(bytes32 permName, address addr) returns (uint ret) {
-//		permdata p = perms[permName];
-//		userdata u = users[addr];
-//
-//		//Check if permName even exists
-//		if (p.permnum == 0) return 0;
-//
-//		//Process perm
-//		if (u.permvals[p.permnum] == 0){
-//			if (u.exclude[p.permnum]) return u.permvals[p.permnum];
-//			else return p.globalval;
-//		}
-//		else { 
-//			return u.permvals[p.permnum]; 
-//		}
-//	}
 
 	function getPerm(bytes32 permName, address addr) returns (uint ret) {
 		permdata p = perms[permName];
@@ -137,20 +119,6 @@ contract gendoug {
 
 		return 1;
 	}
-
-//	function setExclude(bytes32 permName, address addr, bool value) returns (uint ret) {
-//		permdata p = perms[permName];
-//		userdata u = users[addr];
-//
-//		//Check that it even exists
-//		if (p.permnum == 0) return 0;
-//
-//		//Check for doug perms for ORIGIN
-//		if (getPerm("DOUG", tx.origin)!=1) return 0;
-//
-//		u.exclude[p.permnum] = value;
-//		return 1;
-//	}
 
 	function setExclude(bytes32 permName, address addr, uint value) returns (uint ret) {
 		permdata p = perms[permName];
