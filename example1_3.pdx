@@ -1,0 +1,25 @@
+#Same old deployment
+deploy:
+	example1.sol => test3
+
+#Time for some testing
+
+#This is unecessary but included for completeness
+set:
+	0xdeadbeef => testval
+
+#Check that default value is 0xFEEDFACE 
+call:
+	{{test3}} => get => output1
+assert:
+	{{output1}} => 0xfeedface
+
+#Set the value and then test that it actually changed
+transact:
+	{{test3}} => set {{testval}}
+commit:
+
+call:
+	{{test3}} => get => output2
+assert:
+	{{output2}} => {{testval}}

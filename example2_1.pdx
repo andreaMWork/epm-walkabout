@@ -1,0 +1,88 @@
+# Just to be sure
+# Note this testing package assumes {{myaddr}} stores the address that you used for deploying this .pdx
+deploy:
+	gendoug.sol => {{gendoug}}
+
+commit:
+
+# Testing Contract initialized correctly
+# Test that your address was given "DOUG" permissions (Will not work if getPerm broken
+call:
+	{{gendoug}} => getPerm "DOUG" {{myaddr}} => {{out}}
+assert:
+	{{out}} => 1
+
+
+### Functionality Testing
+
+## NameReg Testing
+transact:
+	{{gendoug}} => register "testing" 0xdeadbeef
+commit:
+call:
+	{{gendoug}} => checkName "testing" => {{out}}
+assert:
+	{{out}} => 0xdeadbeef
+
+## Permission Testing
+# Create new permission for testing
+call:
+	{{gendoug}} => permExist "bobbyjoe" => {{exist}}
+assert:
+	{{exist}} => 0 
+transact:
+	{{gendoug}} => addPerm "bobbyjoe"
+commit:
+call:
+	{{gendoug}} => permExist "bobbyjoe" => {{exist}}
+assert:
+	{{exist}} => 1
+
+# Set the global value for that permission
+transact:
+	{{gendoug}} => setGlobal "bobbyjoe" 2
+commit:
+call:
+	{{gendoug}} => getPerm "bobbyjoe" {{myaddr}} => {{perm}}
+assert:
+	{{perm}} => 2
+
+#Exclude yourself from the global value
+transact:
+	{{gendoug}} => setExclude "bobbyjoe" {{myaddr}} 1
+commit:
+call:
+	{{gendoug}} => getPerm "bobbyjoe" {{myaddr}} => {{perm}}
+assert:
+	{{perm}} => 0
+
+# Unexclude yourself then give yourself a perm value
+transact:
+	{{gendoug}} => setExclude "bobbyjoe" {{myaddr}} 0
+commit:
+call:
+	{{gendoug}} => getPerm "bobbyjoe" {{myaddr}} => {{perm}}
+assert:
+	{{perm}} => 2
+transact:
+	{{gendoug}} => setPerm "bobbyjoe" {{myaddr}} 1
+commit:
+call:
+	{{gendoug}} => getPerm "bobbyjoe" {{myaddr}} => {{perm}}
+assert:
+	{{perm}} => 1
+
+# Delete the permission. Check it no longer exists and you can't get it
+transact:
+	{{gendoug}} => rmPerm "bobbyjoe"
+commit:
+call:
+	{{gendoug}} => permExist "bobbyjoe" => {{exist}}
+assert:
+	{{exist}} => 0
+call:
+	{{gendoug}} => getPerm "bobbyjoe" {{myaddr}} => {{perm}}
+assert:
+	{{perm}} => 0
+
+## TODO - Red Team testing - If you don't have DOUG can you access admin funcs

@@ -1,0 +1,7 @@
+#Deploying the contract 
+deploy:
+	example1.sol => test2
+
+#Storing the contracts address in the contract
+transact:
+	{{test}} => set {{test}}
