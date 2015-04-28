@@ -5,15 +5,21 @@ So lets start. First. To ensure we are all on the same page lets get EPM install
 This assumes you have Go set up properly. I will not cover how to do that here but you NEED TO HAVE Go 1.4 OR HIGHER!
 
 EPM (Develop) setup
+
 1.) Type in a terminal "go get github.com/eris-ltd/epm-go"
+
 2.) cd $GOPATH/src/github.com/eris-ltd/epm-go
+
 3.) git checkout develop (we will be using the develop branch to utilize some brand new features)
+
 4.) git pull
+
 5.) make
 
-If you have a ~/.decerver folder, delete it. We want a clean slate for this.
+If you have a ~/.decerver folder, delete it. Alternatively, export a new path for the DECERVER environment variable. We want a clean slate for this.
 
 1) Init
+
 Epm works out of the same ~/.decerver folder as decerver does. This is an intentional choice to standardize the working environment. To set up the directory structure simply type `epm init`
 
 Lets checkout what has happened: navigate to ~/.decerver
