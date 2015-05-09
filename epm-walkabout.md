@@ -438,8 +438,16 @@ If you want to see what happens when an assert try editing either the .pdx or th
 
 One tiny note about pdx's and vars. Vars are stored PER CHAIN. A var created in one chain is not accessible from another chain. ALSO the vars created and edited in pdx sessions are persistent! So they can be used from commandline or other pdx files.
 
-For a take-home assignment take a look at the files example2.sol (which is actually the solidity version of gendoug which runs permissions on thelonious chains) and the associated example2_1.pdx which is the deployment and testing suite. It follows much the same formula as above. 
+For a take-home assignment take a look at the files example2.sol (which is actually the solidity version of gendoug which runs permissions on thelonious chains) and the associated example2_1.pdx which is the deployment and testing suite. It follows much the same formula as above. One important thing to note is that is assumes you have set the var named "myaddr" to the address you are using. The easiest method to do this is the following:
+
+`epm plop addr` will show you the address you are using on the chain. Copy this value (lets say its a12b3de22...)
+
+`epm cmd set myaddr 0xa12b3de22...` Note that the address has been pre-pended with "0x" indicating its a hex value. This is important.
+
+now you can deploy the example2_1.pdx properly. If you do not do the previous steps most of the assertions will fail. 
 
 Thats all for today. Despite the length of it, this is just the basics of epm. And we are always looking to improve its functionality. I hope this helped give you a sense of how epm works and how you work with epm! 
 
 Class dismissed
+
+Thanks to everyone who has helped in the testing and given feedback to this tutorial. It is invaluable.

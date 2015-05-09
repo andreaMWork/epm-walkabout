@@ -1,7 +1,7 @@
 # Just to be sure
 # Note this testing package assumes {{myaddr}} stores the address that you used for deploying this .pdx
 deploy:
-	gendoug.sol => {{gendoug}}
+	example2.sol => {{gendoug}}
 
 commit:
 

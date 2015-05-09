@@ -14,7 +14,7 @@ contract gendoug {
 	mapping (bytes32 => address) names;
 
 	function gendoug() {
-		pcount =  1;
+		pcount = 1;
 		permdata p = perms["DOUG"];
 		userdata u = users[tx.origin];
 		p.permnum = pcount;
