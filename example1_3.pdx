@@ -6,7 +6,7 @@ deploy:
 
 #This is unecessary but included for completeness
 set:
-	0xdeadbeef => testval
+	testval => 0xdeadbeef
 
 #Check that default value is 0xFEEDFACE 
 call:
