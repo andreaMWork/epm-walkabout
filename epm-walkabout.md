@@ -12,9 +12,7 @@ EPM (Develop) setup
 
 3.) git checkout develop (we will be using the develop branch to utilize some brand new features)
 
-4.) git pull
-
-5.) make
+4.) make
 
 If you have a ~/.decerver folder, delete it. Alternatively, export a new path for the DECERVER environment variable. We want a clean slate for this.
 
