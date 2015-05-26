@@ -1,31 +1,35 @@
-So its been a while since I wrote any tutorials so I figured its about time. This is going to be a guide to understanding the machinery that is epm. I have been accused of being overly wordy or not wordy enough at times and this will be no exception I will be both of those things. But I figure its about time that someone wrote down what exactly this "EPM" thing is and why its such a fun (and useful) tool to use once you understand it a little bit. This is going to be an interactive tutorial so its expected that you will follow along and actually run the commands yourself and check what changes. One final caveat is that epm is constantly evolving. Whenever I am working with smart contracts and think of some tool that would make it simpler I ping Ethan and he makes it happen. As such this tutorial will be at least partially invalid almost immediately.
+So its been a while since I wrote any tutorials so I figured its about time. This is going to be a guide to understanding the machinery that is epm. I have been accused of being overly wordy or not wordy enough at times and this will be no exception I will be both of those things. But I figure its about time that someone wrote down what exactly this "EPM" thing is and why its such a fun (and useful) tool to use once you understand it a little bit. This is going to be an interactive tutorial so its expected that you will follow along and actually run the commands yourself and check what changes.
+
+To aid in this, all of the materials used in this tutorial have been uploaded to its own repo. If you don't have it, you clone the [EPM-Walkabout](https://github.com/eris-ltd/epm-walkabout) repo.
+
+ One final caveat is that epm is constantly evolving. Whenever I am working with smart contracts and think of some tool that would make it simpler I ping Ethan and he makes it happen. As such this tutorial will be at least partially invalid almost immediately.
+
+A lot of this material is not new. It has been present in various forms. Other great sources are:
+[EPM Tutorial](https://docs.erisindustries.com/tutorials/epm/)
+[EPM README](https://github.com/eris-ltd/epm-go/blob/master/cmd/epm/README.md)
 
 So lets start. First. To ensure we are all on the same page lets get EPM installed. The contracts we will be working with are included in this repo.
 
-This assumes you have Go set up properly. I will not cover how to do that here but you NEED TO HAVE Go 1.4 OR HIGHER!
+This assumes you have Go set up properly. I will not cover how to do that here but you NEED TO HAVE Go 1.4 OR LATER!
 
-EPM (Develop) setup
+EPM setup
 
 1.) Type in a terminal "go get github.com/eris-ltd/epm-go"
 
 2.) cd $GOPATH/src/github.com/eris-ltd/epm-go
 
-3.) git checkout develop (we will be using the develop branch to utilize some brand new features)
+3.) make
 
-4.) git pull
-
-5.) make
-
-If you have a ~/.decerver folder, delete it. Alternatively, export a new path for the DECERVER environment variable. We want a clean slate for this.
+If you have a ~/.decerver or ~/.eris folder, delete it. Alternatively, export a new path for the ERIS environment variable. We want a clean slate for this.
 
 1) Init
 
-Epm works out of the same ~/.decerver folder as decerver does. This is an intentional choice to standardize the working environment. To set up the directory structure simply type `epm init`
+Epm works out of the same ~/.eris folder as decerver does. This is an intentional choice to standardize the working environment. To set up the directory structure simply type `epm init`
 
-Lets checkout what has happened: navigate to ~/.decerver
+Lets checkout what has happened: navigate to ~/.eris
 
 ```
-dennis@Juzo:~/.decerver$ ls
+dennis@Juzo:~/.eris$ ls
 blockchains  dapps  filesystems  keys  languages  logs  modules  scratch
 ```
 
@@ -79,7 +83,7 @@ To create a new thelonious chain type `epm new -type thel` this will create a ne
  This is the genesis config file for a thelonious chain. Editing this json file can set/modify the permissions of the thelonious chain you are creating. I will not go into detail what all these options do here as for epm we don't care too much. Save and close this file. in vim this is done by typing `:wq`. After doing so you will see the following:
 
 ```
-dennis@Juzo:~/.decerver/modules$ epm new -type thel
+dennis@Juzo:~/.eris/modules$ epm new -type thel
 thel
 2015/04/23 21:59:10 [EPM-CLI] Deployed and installed chain: thelonious/f1f1131d39303ae871b76deb6a875c7b9cdadab5
 ```
@@ -89,7 +93,7 @@ thel
  Where did this chain go? Its in the blockchains folder. If you move to blockchains/ you will see that there is a file named "HEAD" (which is empty right now) a folder named "refs" and finally a folder named "thelonious". This last folder is where all thelonious blockchains will be stored.
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ ls
+dennis@Juzo:~/.eris/blockchains/thelonious$ ls
 config.json  f1f1131d39303ae871b76deb6a875c7b9cdadab5  genesis.json
 ```
 
@@ -98,15 +102,15 @@ The config and genesis jsons in here are the defaults for thelonious chains and 
  So can we start using the chain now? ... Not quite. The reason is that we have not told EPM that we wish to work with this chain. YOu can see this for yourself by typing `epm head`. The "epm head" sub command works similarly to "git branch" command in that it tells you what chain is being worked on right now. If we type the command right now we get the following:
 
 ```
-dennis@Juzo:~/.decerver/modules$ epm head
+dennis@Juzo:~/.eris/modules$ epm head
 2015/04/23 22:05:39 [EPM-CLI] There is no chain checked out
 ```
 
 No chain checked out. :( so lets check out the chain we just created. `epm checkout chainid` is the command for this. So if we type `epm checkout f1f1131d39303ae871b76deb6a875c7b9cdadab5` we get ...
 
 ```
-dennis@Juzo:~/.decerver/modules$ epm checkout f1f1131d39303ae871b76deb6a875c7b9cdadab5
-2015/04/23 22:08:22 [EPM-CLI] open /home/dennis/.decerver/blockchains/refs/f1f1131d39303ae871b76deb6a875c7b9cdadab5: no such file or directory
+dennis@Juzo:~/.eris/modules$ epm checkout f1f1131d39303ae871b76deb6a875c7b9cdadab5
+2015/04/23 22:08:22 [EPM-CLI] open /home/dennis/.eris/blockchains/refs/f1f1131d39303ae871b76deb6a875c7b9cdadab5: no such file or directory
 ```
 
 um... what happened? Typing `epm head` will show that the chain is still not checked out.
@@ -116,7 +120,7 @@ The reason for this is that epm is a tool designed for compatibility with many d
 No errors! excellent and we can verify that we have been successful with `epm head` again which shows:
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm head
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm head
 thelonious/f1f1131d39303ae871b76deb6a875c7b9cdadab5
 ```
 
@@ -127,14 +131,14 @@ But working with the chainid was a little bit awkward. Who wants to type, rememb
 So lets give this chain a name. The refs subcommand can be used for listing and adding references to chains. You can see that there are no references right now by typing `epm refs` which will print out the following.
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm refs
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm refs
 Name:               Blockchain:                                                 Address:
 ```
 
 Lets name this chain "bob" after my uncle. `epm refs add bob` will give the current chain the name bob. Don't believe me? After running it run `epm refs` again and you should see the following:
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm refs
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm refs
 Name:               Blockchain:                                                 Address:            
 bob                 thelonious/f1f1131d39303ae871b76deb6a875c7b9cdadab5         0x27cdf9906ed14a0e0c7583962b74dc44ec1dad3d
 ```
@@ -142,7 +146,7 @@ bob                 thelonious/f1f1131d39303ae871b76deb6a875c7b9cdadab5         
 Congrats! Checked out and named blockchain! But that process was a little cumbersome no? Wouldn't it be nice if you didn't HAVE to type three separate commands? Well as it turns out we are lazy too! Thats why you can add flags to the chain creation command that will both checkout and name the chain after creating the chain. Lets try it out. Type: `epm new -type thel -name robert -o` once again vim will open `:wq` it again and you will see:
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm new -type thel -name robert -o
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm new -type thel -name robert -o
 thel
 2015/04/23 22:38:12 [EPM-CLI] Deployed and installed chain: thelonious/d75dd3b7ee489f73670682390a4bdbaca97014e5
 2015/04/23 22:38:12 [EPM-CLI] Checked out chain: thelonious/d75dd3b7ee489f73670682390a4bdbaca97014e5
@@ -154,9 +158,9 @@ It seems to have worked but what did we do? well the -name flag seems obvious, i
 lets just double check that it all worked.
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm head
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm head
 thelonious/d75dd3b7ee489f73670682390a4bdbaca97014e5
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm refs
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm refs
 Name:               Blockchain:                                                 Address:            
 bob                 thelonious/f1f1131d39303ae871b76deb6a875c7b9cdadab5         0x27cdf9906ed14a0e0c7583962b74dc44ec1dad3d
 robert              thelonious/d75dd3b7ee489f73670682390a4bdbaca97014e5         0xf06285513035838d9dd5af72b9e374622566defb
@@ -175,7 +179,7 @@ Creating a chain that only lives on your computer is all well and good... but ki
 zoooooom
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm fetch 104.236.146.58:15258 -name bobert -o
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm fetch 104.236.146.58:15258 -name bobert -o
 2015/04/23 22:58:39 [EPM-CLI] Fetching state af50ddc5cc947d144fa7dc2b0bf3ab4b1da22d1e5366668b16cacf6266326f7b
 2015/04/23 22:58:41 [EPM-CLI] Fetched genesis block for chain 49aa20cbeb2c1bf4a5d0863f1ac2e61b04cde50c
 2015/04/23 22:58:41 [EPM-CLI] Checked out chain: thelonious/49aa20cbeb2c1bf4a5d0863f1ac2e61b04cde50c
@@ -205,7 +209,7 @@ There is a lot to this so i'm going to cover the basics of interaction via comma
 Blockchain interaction in epm revolves around vars, and 4 interaction commands. Lets start with vars. Vars are persistent chain specific variables which can be accessed and used at any time via {{varname}}. This will become more clear with examples. The "set" command is specifically designed to allow you to set the value stored in vars. For example `epm cmd set billy 0xdeadbeef` will set {{billy}} to 0xdeadbeef
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm cmd set billy 0xdeadbeef
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm cmd set billy 0xdeadbeef
 Storing: billy 0xdeadbeef
 2015/04/23 23:59:47 [EPM] Executing job: set
 ```
@@ -213,14 +217,14 @@ Storing: billy 0xdeadbeef
 We can inspect the value of a var through the "plop" command for example `epm plop vars billy` will give:
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm plop vars billy
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm plop vars billy
 0xdeadbeef
 ```
 
 The value stored in a var can be used in almost any command through the use of {{varname}} a simple example is `epm set bobby {{billy}}` which should copy the value of the var "billy" into the var "bobby" and sure enough:
 
 ```
-dennis@Juzo:~/.decerver/blockchains/thelonious$ epm cmd set bobby {{billy}}
+dennis@Juzo:~/.eris/blockchains/thelonious$ epm cmd set bobby {{billy}}
 Storing: bobby 0xdeadbeef
 2015/04/24 00:03:12 [EPM] Executing job: set
 ```
