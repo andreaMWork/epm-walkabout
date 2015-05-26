@@ -13,6 +13,16 @@ So lets start. First. To ensure we are all on the same page lets get EPM install
 This assumes you have Go set up properly. I will not cover how to do that here but you NEED TO HAVE Go 1.4 OR LATER!
 
 EPM setup
+=======
+## Using Docker
+
+You can use [Docker](http://docker.com/) to provide a Go environment:
+
+```
+$ docker run --name epm1 -it --expose 15256-15258 -v $PWD:/mnt golang:latest
+# apt-get update 
+# apt-get install -y libgmp3-dev vim
+```
 
 1.) Type in a terminal "go get github.com/eris-ltd/epm-go"
 
@@ -22,7 +32,16 @@ EPM setup
 
 If you have a ~/.decerver or ~/.eris folder, delete it. Alternatively, export a new path for the ERIS environment variable. We want a clean slate for this.
 
-1) Init
+6.) Docker step:
+
+```
+# cd /mnt
+# exit
+$ docker commit epm1 epm
+$ docker start -i epm1
+```
+
+# 1) Init
 
 Epm works out of the same ~/.eris folder as decerver does. This is an intentional choice to standardize the working environment. To set up the directory structure simply type `epm init`
 
@@ -194,11 +213,28 @@ This is because by default epm is going to hide the log messages from running th
 
 By itself `epm run` will only open yourself up to the network. If you want to mine you can add the "--mine" flag to the end. For example `epm -log 3 run --mine` this will show your computer mining. The peerservers for 2gather do not mine the chain themselves so if you aren't mining (and there is no one else on the chain) no new blocks will come in. 
 
-BUDDY BONUS!
+## BUDDY BONUS!
+
 If you have a friend who is also working with epm you can have a little bit of fun here. If one of you types `epm -log 3 run` and the other types `epm run --mine` the first person will not mine but will be able to see new blocks come in from the second user. Its kind of cool if you ask me.
 
+You can do this yourself easily if you're using Docker:
 
-**KEYS!** TODO
+```
+# epm -log 3 run
+```
+
+Then in another shell:
+
+```
+$ docker run -it --name=epm2 epm
+# epm init
+# epm fetch 104.236.146.58:15258 -name bobert -o
+# epm run --mine
+```
+
+How do we know this is working?  I don't see visual feedback on either node.
+
+# **KEYS!** TODO
 
 
 3) Poking the chain
