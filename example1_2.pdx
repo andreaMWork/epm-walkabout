@@ -4,4 +4,4 @@ deploy:
 
 #Storing the contracts address in the contract
 transact:
-	{{test}} => set {{test}}
+	{{test2}} => set {{test2}}
